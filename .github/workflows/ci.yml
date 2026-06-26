@@ -32,6 +32,11 @@ jobs:
         # pin hax to known-working (0.3.7)
         hax_reference: "d8b5b3d3b666fee8943a351445d2b680105e8ea3"
 
+    - name: Find hax binary locations
+      run: |
+        which cargo-hax || echo "cargo-hax not in PATH"
+        find $HOME -name 'cargo-hax' 2>/dev/null
+
     - name: Install elan (Lean version manager)
       run: |
         curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --no-modify-path
