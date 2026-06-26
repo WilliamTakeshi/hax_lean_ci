@@ -31,11 +31,16 @@ jobs:
       working-directory: proofs/lean/extraction
       run: lake build
 
-    # - name: Pack up artifact
-    #   run: zip -j -r hax_lean_ci-lean.zip $(find . -name '*.lean' -path '*/extraction/*')
+    - name: Pack up artifact
+      run: |
+        zip hax_lean_ci-lean.zip \
+          proofs/lean/extraction/*.lean \
+          proofs/lean/extraction/lakefile.toml \
+          proofs/lean/extraction/lean-toolchain \
+          proofs/lean/extraction/lake-manifest.json
 
-    # - name: Upload artifact
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: lean-code
-    #     path: ./hax_lean_ci-lean.zip
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: lean-code
+        path: ./hax_lean_ci-lean.zip
