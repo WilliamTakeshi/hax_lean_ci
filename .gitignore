@@ -1,0 +1,6 @@
+/target
+
+# Everything from proofs/lean/extraction except lakefile.toml and lean-toolchain 
+proofs/lean/extraction/*
+!proofs/lean/extraction/lakefile.toml
+!proofs/lean/extraction/lean-toolchain

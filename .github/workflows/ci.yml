@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  generate-lean:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install hax
+      uses: hacspec/hax-actions@main
+      with:
+        # pin hax to known-working (0.3.7)
+        hax_reference: "d8b5b3d3b666fee8943a351445d2b680105e8ea3"
+
+    - name: Install elan (Lean version manager)
+      run: |
+        curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --no-modify-path
+        echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+    - name: Hax extract into Lean
+      run: cargo hax into lean
+
+    - name: Build Lean extraction
+      working-directory: proofs/lean/extraction
+      run: lake build
+
+    # - name: Pack up artifact
+    #   run: zip -j -r hax_lean_ci-lean.zip $(find . -name '*.lean' -path '*/extraction/*')
+
+    # - name: Upload artifact
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: lean-code
+    #     path: ./hax_lean_ci-lean.zip
