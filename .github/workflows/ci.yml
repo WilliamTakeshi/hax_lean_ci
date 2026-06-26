@@ -13,7 +13,20 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Cache hax binaries
+      id: cache-hax
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/bin/cargo-hax
+          ~/.cargo/bin/driver-hax-frontend-exporter
+          ~/.cargo/bin/hax-engine-names-extract
+          ~/.cargo/bin/hax-export-json-schemas
+          ~/.cargo/bin/hax-rust-engine
+        key: cargo-hax-d8b5b3d3b666fee8943a351445d2b680105e8ea3
+
     - name: Install hax
+      if: steps.cache-hax.outputs.cache-hit != 'true'
       uses: hacspec/hax-actions@main
       with:
         # pin hax to known-working (0.3.7)
